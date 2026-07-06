@@ -40,3 +40,18 @@ class Bet:
 
         self.name=name
         self.amount=amount
+
+#Create Strategy Class
+class Strategy:
+
+    def get_bets(self):
+
+        return [
+
+            Bet("Black",2),
+
+            Bet("Third12",1),
+
+            Bet("Zero",1)
+
+        ]
