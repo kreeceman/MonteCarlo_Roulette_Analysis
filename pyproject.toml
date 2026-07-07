@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roulette-simulator"
+version = "0.1.0"
+description = "Monte Carlo simulator for American and European roulette strategies."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "plotly>=5.0",
+    "streamlit>=1.30",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+parquet = ["pyarrow>=14.0"]
+
+[project.scripts]
+roulette-sim = "roulette_simulator.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

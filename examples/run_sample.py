@@ -1,4 +1,4 @@
-"""Run the roulette simulator CLI."""
+"""Run the requested sample roulette simulation and export CSV outputs."""
 
 from roulette_simulator.cli import main
 
