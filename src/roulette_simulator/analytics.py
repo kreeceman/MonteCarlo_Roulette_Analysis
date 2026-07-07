@@ -21,6 +21,21 @@ def probability_of_hitting_profit_target(session_df: pd.DataFrame) -> float:
     return float(session_df["profit_target_hit"].mean())
 
 
+def probability_of_doubling(session_df: pd.DataFrame) -> float:
+    """Return the probability that a session reached at least 2x starting bankroll."""
+
+    doubled = session_df["ending_bankroll"] >= session_df["starting_bankroll"] * 2
+    return float((session_df["profit_target_hit"] | doubled).mean())
+
+
+def probability_of_busting(session_df: pd.DataFrame) -> float:
+    """Return the probability of losing the bankroll or being unable to continue."""
+
+    bust_reasons = {"ruin", "insufficient_bankroll", "stop_loss"}
+    busted = session_df["stop_reason"].isin(bust_reasons) | (session_df["ending_bankroll"] <= 0)
+    return float(busted.mean())
+
+
 def expected_profit_per_spin(spin_df: pd.DataFrame) -> float:
     return float(spin_df["profit"].mean())
 
@@ -52,9 +67,15 @@ def strategy_comparison_summary(session_df: pd.DataFrame) -> pd.DataFrame:
         median_ending_bankroll=("ending_bankroll", "median"),
         average_net_profit=("net_profit", "mean"),
         std_net_profit=("net_profit", lambda s: s.std(ddof=0)),
+        chance_of_doubling=(
+            "profit_target_hit",
+            "mean",
+        ),
+        chance_of_busting=("stop_reason", lambda s: s.isin({"ruin", "insufficient_bankroll", "stop_loss"}).mean()),
         probability_of_ruin=("ruin_flag", "mean"),
         probability_profit_target=("profit_target_hit", "mean"),
         average_max_drawdown=("max_drawdown", "mean"),
+        worst_max_drawdown=("max_drawdown", "max"),
         average_session_length=("spins_played", "mean"),
     )
     return summary.reset_index()

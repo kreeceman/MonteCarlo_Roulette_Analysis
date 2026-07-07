@@ -14,7 +14,7 @@ The original prototype modeled a wheel containing both `0` and `"00"`, which is 
 - Configurable starting bankroll, base unit, table limits, max spins, stop-loss, and profit target.
 - Deterministic RNG seeds for reproducible Monte Carlo runs.
 - Validated roulette bets and profit-only payouts.
-- Built-in strategies: flat red, flat black, flat dozen, black/third dozen/zero, martingale red, and Fibonacci red.
+- Built-in strategies: flat red/black/dozen, 2-1-1/3-2-1/5-3-2 black-third-dozen-zero patterns, black/third dozen/zero, martingale, reverse martingale, Oscar's Grind, D'Alembert, and Fibonacci.
 - Spin-level and session-level pandas DataFrames.
 - CSV export helpers and optional parquet export.
 - Streamlit dashboard with Plotly charts.
@@ -80,7 +80,9 @@ Outputs are written by default to:
 streamlit run dashboard.py
 ```
 
-The dashboard lets you adjust wheel type, strategy, starting bankroll, base unit, table minimum, table maximum, max spins, number of simulations, stop-loss, profit target, and seed. It displays an ending bankroll histogram, sample bankroll paths, ruin and profit-target KPIs, and a strategy summary table.
+The dashboard lets you compare multiple strategies at once while adjusting wheel type, starting bankroll, base unit, table minimum, table maximum, max spins, simulations per strategy, and seed. It also includes a custom strategy builder where you can add one or more flat bet legs, choose bet type, units, and selections, then compare that custom strategy against the built-ins. It uses a double-or-bust frame by default: the profit target is one starting bankroll, and the stop-loss is one starting bankroll.
+
+It displays average profit, standard deviation, chance of doubling, chance of busting, average session length, maximum drawdown, ending bankroll distributions, sample bankroll paths, and downloadable spin/session CSVs.
 
 ## Data Dictionary
 

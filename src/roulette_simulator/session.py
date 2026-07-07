@@ -52,6 +52,12 @@ class RouletteSession:
             if amount_wagered <= 0:
                 stop_reason = "no_bets"
                 break
+            if any(bet.amount < self.config.table_minimum for bet in bets):
+                stop_reason = "below_table_minimum"
+                break
+            if any(bet.amount > self.config.table_maximum for bet in bets):
+                stop_reason = "table_maximum"
+                break
             if amount_wagered > bankroll_before:
                 stop_reason = "insufficient_bankroll"
                 break

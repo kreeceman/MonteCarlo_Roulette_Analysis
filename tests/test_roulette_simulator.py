@@ -1,14 +1,14 @@
 import pandas as pd
 import pytest
 
-from roulette_simulator.analytics import strategy_comparison_summary
+from roulette_simulator.analytics import probability_of_busting, probability_of_doubling, strategy_comparison_summary
 from roulette_simulator.bets import Bet, BetType
 from roulette_simulator.configuration import SessionConfig
 from roulette_simulator.evaluator import Evaluator
 from roulette_simulator.player import Player
 from roulette_simulator.session import RouletteSession
 from roulette_simulator.simulation import MonteCarloSimulation
-from roulette_simulator.strategies import FlatRedStrategy
+from roulette_simulator.strategies import STRATEGIES, CustomBetLeg, CustomFlatStrategy, FlatRedStrategy, create_strategy
 from roulette_simulator.wheel import RouletteWheel
 
 
@@ -168,5 +168,59 @@ def test_strategy_comparison_analytics_return_expected_columns():
         "probability_of_ruin",
         "probability_profit_target",
         "average_max_drawdown",
+        "worst_max_drawdown",
+        "chance_of_doubling",
+        "chance_of_busting",
         "average_session_length",
     }.issubset(summary.columns)
+
+
+def test_progression_and_flat_pattern_strategies_are_registered():
+    expected = {
+        "flat_2_1_1_black_third_zero",
+        "flat_3_2_1_black_third_zero",
+        "flat_5_3_2_black_third_zero",
+        "martingale_black",
+        "reverse_martingale_black",
+        "oscars_grind_black",
+        "dalembert_black",
+        "fibonacci_black",
+    }
+    assert expected.issubset(STRATEGIES)
+    assert all(create_strategy(name).get_bets(Player(100, 10)) for name in expected)
+
+
+def test_double_and_bust_probabilities_use_session_outcomes():
+    session_df = pd.DataFrame(
+        [
+            {
+                "starting_bankroll": 100,
+                "ending_bankroll": 200,
+                "profit_target_hit": True,
+                "stop_reason": "profit_target",
+            },
+            {
+                "starting_bankroll": 100,
+                "ending_bankroll": 0,
+                "profit_target_hit": False,
+                "stop_reason": "ruin",
+            },
+        ]
+    )
+    assert probability_of_doubling(session_df) == 0.5
+    assert probability_of_busting(session_df) == 0.5
+
+
+def test_custom_flat_strategy_builds_user_defined_bets():
+    strategy = CustomFlatStrategy(
+        (
+            CustomBetLeg(BetType.BLACK, 2),
+            CustomBetLeg(BetType.DOZEN, 1, 3),
+            CustomBetLeg(BetType.STRAIGHT, 0.5, 0),
+        ),
+        name="Custom 2-1-half",
+    )
+    bets = strategy.get_bets(Player(starting_bankroll=100, base_unit=10))
+    assert strategy.name == "Custom 2-1-half"
+    assert [bet.amount for bet in bets] == [20, 10, 5]
+    assert [bet.bet_type for bet in bets] == [BetType.BLACK, BetType.DOZEN, BetType.STRAIGHT]
