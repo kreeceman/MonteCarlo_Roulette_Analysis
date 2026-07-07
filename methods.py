@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-import bets
-
+from bets import BetType, Bet
 class BetMethod(ABC):
 
     @abstractmethod

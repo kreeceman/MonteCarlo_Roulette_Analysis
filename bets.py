@@ -1,5 +1,5 @@
-from Roulette import BetType(Enum), BET_CHECKS, BET_PAYOUTS
-
+from evaluator import BET_CHECKS, BET_PAYOUTS
+from enum import Enum
 # Create Bet Class
 class Bet:
 
@@ -33,7 +33,7 @@ class BetType(Enum):
     HIGH = "High"
     LOW = "Low"
 
-    BET_PAYOUTS = {
+BET_PAYOUTS = {
 
     BetType.BLACK:1,
     BetType.RED:1,
