@@ -20,6 +20,7 @@ parquet = ["pyarrow>=14.0"]
 
 [project.scripts]
 roulette-sim = "roulette_simulator.cli:main"
+roulette-powerbi-export = "roulette_simulator.powerbi:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
