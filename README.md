@@ -18,7 +18,6 @@ The original prototype modeled a wheel containing both `0` and `"00"`, which is 
 - Spin-level and session-level pandas DataFrames.
 - CSV export helpers and optional parquet export.
 - Streamlit dashboard with Plotly charts.
-- Power BI-ready CSV export workflow and dashboard build guide.
 - Pytest coverage for wheel behavior, payouts, stopping rules, simulations, and analytics.
 
 ## Architecture
@@ -84,29 +83,6 @@ streamlit run dashboard.py
 The dashboard lets you compare multiple strategies at once while adjusting wheel type, starting bankroll, base unit, table minimum, table maximum, max spins, simulations per strategy, and seed. It also includes a custom strategy builder where you can add one or more flat bet legs, choose bet type, units, and selections, then compare that custom strategy against the built-ins. It uses a double-or-bust frame by default: the profit target is one starting bankroll, and the stop-loss is one starting bankroll.
 
 It displays average profit, standard deviation, chance of doubling, chance of busting, average session length, maximum drawdown, ending bankroll distributions, sample bankroll paths, and downloadable spin/session CSVs.
-
-## Build A Power BI Dashboard
-
-Generate a Power BI-ready export folder:
-
-```bash
-python -m roulette_simulator.powerbi --output-dir powerbi_exports --simulations 1000 --max-spins 300 --starting-bankroll 1000 --base-unit 10
-```
-
-Or use the installed console script:
-
-```bash
-roulette-powerbi-export --output-dir powerbi_exports
-```
-
-The export creates:
-
-- `spin_results.csv`
-- `session_summaries.csv`
-- `strategy_summary.csv`
-- `data_dictionary.csv`
-
-See `docs/POWER_BI_DASHBOARD.md` for the recommended Power BI model, DAX measures, pages, and visuals.
 
 ## Data Dictionary
 

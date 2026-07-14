@@ -3,5 +3,4 @@ __pycache__/
 .pytest_cache/
 *.py[cod]
 outputs/
-powerbi_exports/
 *.egg-info/

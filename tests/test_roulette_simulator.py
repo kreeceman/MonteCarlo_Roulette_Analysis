@@ -6,7 +6,6 @@ from roulette_simulator.bets import Bet, BetType
 from roulette_simulator.configuration import SessionConfig
 from roulette_simulator.evaluator import Evaluator
 from roulette_simulator.player import Player
-from roulette_simulator.powerbi import run_powerbi_export
 from roulette_simulator.session import RouletteSession
 from roulette_simulator.simulation import MonteCarloSimulation
 from roulette_simulator.strategies import STRATEGIES, CustomBetLeg, CustomFlatStrategy, FlatRedStrategy, create_strategy
@@ -225,21 +224,3 @@ def test_custom_flat_strategy_builds_user_defined_bets():
     assert strategy.name == "Custom 2-1-half"
     assert [bet.amount for bet in bets] == [20, 10, 5]
     assert [bet.bet_type for bet in bets] == [BetType.BLACK, BetType.DOZEN, BetType.STRAIGHT]
-
-
-def test_powerbi_export_writes_expected_csvs(tmp_path):
-    outputs = run_powerbi_export(
-        output_dir=tmp_path,
-        strategies=["flat_black", "martingale_black"],
-        simulations=2,
-        max_spins=3,
-        starting_bankroll=100,
-        base_unit=10,
-        table_minimum=10,
-        table_maximum=100,
-        seed=7,
-    )
-    assert set(outputs) == {"spin_results", "session_summaries", "strategy_summary", "data_dictionary"}
-    assert all(path.exists() for path in outputs.values())
-    summary = pd.read_csv(outputs["strategy_summary"])
-    assert {"strategy", "chance_of_doubling", "chance_of_busting"}.issubset(summary.columns)
