@@ -2,6 +2,79 @@
 
 MonteCarlo Roulette Analysis is a Python simulation toolkit for comparing roulette betting strategies across many independent sessions. It is built for analytics workflows: spin-level facts, session-level summaries, CSV exports, and a Streamlit/Plotly dashboard starter.
 
+## How to use
+
+This project is easiest to use through the web dashboard.
+
+### 1. Open PowerShell
+
+Open PowerShell on your computer.
+
+### 2. Go to the project folder
+
+Copy and paste this command:
+
+```powershell
+cd C:\Users\keond\Documents\Codex\2026-07-07\files-mentioned-by-the-user-build\work\MonteCarlo_Roulette_Analysis
+```
+
+### 3. Install the app
+
+Copy and paste these commands:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -e ".[dev]"
+```
+
+You only need to do this install step the first time.
+
+### 4. Start the dashboard
+
+Copy and paste this command:
+
+```powershell
+.venv\Scripts\python -m streamlit run dashboard.py
+```
+
+### 5. Open it in your browser
+
+PowerShell will print a local website link. It usually looks like this:
+
+```text
+http://localhost:8501
+```
+
+Open that link in your browser.
+
+### 6. Run a strategy comparison
+
+In the dashboard:
+
+1. Set `Starting bankroll`.
+2. Set `Base unit`.
+3. Pick one or more strategies.
+4. Optional: turn on `Add custom strategy` to create your own betting mix.
+5. Click `Run comparison`.
+
+The dashboard will show:
+
+- which strategy performed best
+- chance of doubling your bankroll
+- chance of busting
+- average profit
+- ending bankroll charts
+- sample bankroll paths
+- CSV download buttons
+
+### 7. Stop the dashboard
+
+When you are done, go back to PowerShell and press:
+
+```text
+Ctrl + C
+```
+
 ## Key Correction
 
 The original prototype modeled a wheel containing both `0` and `"00"`, which is American double-zero roulette, not European single-zero roulette. This project now supports both wheel types:
@@ -39,7 +112,7 @@ src/roulette_simulator/
 
 The legacy top-level modules are compatibility wrappers. New code should import from `roulette_simulator`.
 
-## Setup
+## Setup Only
 
 ```bash
 python -m venv .venv
@@ -52,7 +125,7 @@ On macOS/Linux, activate with `source .venv/bin/activate`.
 ## Run Tests
 
 ```bash
-pytest
+.venv\Scripts\python -m pytest
 ```
 
 ## Run A Sample Simulation
@@ -76,8 +149,8 @@ Outputs are written by default to:
 
 ## Run The Dashboard
 
-```bash
-streamlit run dashboard.py
+```powershell
+.venv\Scripts\python -m streamlit run dashboard.py
 ```
 
 The dashboard lets you compare multiple strategies at once while adjusting wheel type, starting bankroll, base unit, table minimum, table maximum, max spins, simulations per strategy, and seed. It also includes a custom strategy builder where you can add one or more flat bet legs, choose bet type, units, and selections, then compare that custom strategy against the built-ins. It uses a double-or-bust frame by default: the profit target is one starting bankroll, and the stop-loss is one starting bankroll.
@@ -141,7 +214,6 @@ spin_df, session_df = simulation.run()
 
 - Add richer strategy configuration in the dashboard.
 - Add combined multi-strategy comparison runs.
-- Add Power BI template files that consume the exported CSVs.
 - Add more table-layout bet validation edge cases around zero-adjacent bets.
 - Add confidence intervals and bankroll-at-risk metrics.
 
