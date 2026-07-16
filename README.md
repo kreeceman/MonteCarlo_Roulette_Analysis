@@ -12,10 +12,23 @@ Open PowerShell on your computer.
 
 ### 2. Go to the project folder
 
-Copy and paste this command:
+If you already downloaded or cloned the project, go into that folder:
 
 ```powershell
-cd C:\Users\keond\Documents\Codex\2026-07-07\files-mentioned-by-the-user-build\work\MonteCarlo_Roulette_Analysis
+cd path\to\MonteCarlo_Roulette_Analysis
+```
+
+For example, if you cloned it into your current folder:
+
+```powershell
+cd MonteCarlo_Roulette_Analysis
+```
+
+If you do not have the project yet, clone it first:
+
+```powershell
+git clone https://github.com/kreeceman/MonteCarlo_Roulette_Analysis.git
+cd MonteCarlo_Roulette_Analysis
 ```
 
 ### 3. Install the app
